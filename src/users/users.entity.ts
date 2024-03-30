@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-export class CreateUserDto {
+export class UserEntity {
+    id: string;
     username: string;
     email: string;
-    country: string;
     password: string;
+    country: string;
 }
