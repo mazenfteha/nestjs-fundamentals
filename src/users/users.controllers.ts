@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Patch, Post, UsePipes, ValidationPipe, } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserEntity } from './users.entity';
@@ -16,11 +15,11 @@ export class UsersController {
     }
 
     @Get('/:id')
-    findOne(@Param("id") id : string) {
+    findOne(@Param("id", ParseUUIDPipe) id : string) {
         const user : UserEntity = this.users.find((user) => user.id === id);
         return user;
     }
-
+    @UsePipes(ValidationPipe)
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
         // DTO => data transefer object
@@ -33,7 +32,7 @@ export class UsersController {
     }
 
     @Patch('/:id')
-    update(@Param() id : string, @Body() updateUserDto: UpdateUserDto) {
+    update(@Param('id', ParseUUIDPipe) id : string, @Body(ValidationPipe) updateUserDto: UpdateUserDto) {
         // 1) find the user
         const index = this.users.findIndex((user) => user.id === id )
         //2) update the element
@@ -46,7 +45,7 @@ export class UsersController {
 
     @Delete('/:id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    delete(@Param() id : string) {
+    delete(@Param('id',ParseUUIDPipe) id : string) {
         this.users = this.users.filter((user) => user.id !== id )
     }
     
