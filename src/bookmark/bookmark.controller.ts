@@ -1,8 +1,11 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { BookmarkService } from './bookmark.service';
 import { GetUser } from 'src/auth/decorator';
 import { CreateBookMarkDto, EditBookMarkDto } from './dto';
+import { LoggingInterceptor } from 'src/Interceptors/logging.Interceptor';
+
+@UseInterceptors(new LoggingInterceptor())
 @UseGuards(JwtGuard)
 @Controller('api/v1/bookmarks')
 export class BookmarkController {

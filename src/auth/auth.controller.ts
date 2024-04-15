@@ -1,9 +1,10 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto, LoginDto } from './dto';
 import { GetCurrentUserId, GetUser } from './decorator';
 import { JwtGuard } from './guard';
 import { RtGuard } from './guard';
+import { LoggingInterceptor } from 'src/Interceptors/logging.Interceptor';
 
 
 
@@ -22,6 +23,7 @@ export class AuthController {
     signin(@Body() dto: LoginDto) {
         return this.authService.signin(dto);
     }
+    @UseInterceptors(new LoggingInterceptor())
     @UseGuards(JwtGuard)
     @HttpCode(HttpStatus.OK)
     @Post('logout')
@@ -29,6 +31,7 @@ export class AuthController {
         return this.authService.logout(userId);
     }
 
+    @UseInterceptors(new LoggingInterceptor())
     @UseGuards(RtGuard)
     @Post('refresh')
     @HttpCode(HttpStatus.OK)
