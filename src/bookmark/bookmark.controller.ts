@@ -5,7 +5,7 @@ import { GetUser } from 'src/auth/decorator';
 import { CreateBookMarkDto, EditBookMarkDto } from './dto';
 import { LoggingInterceptor } from 'src/Interceptors/logging.Interceptor';
 
-@UseInterceptors(new LoggingInterceptor())
+@UseInterceptors(LoggingInterceptor)
 @UseGuards(JwtGuard)
 @Controller('api/v1/bookmarks')
 export class BookmarkController {

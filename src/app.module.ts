@@ -1,11 +1,13 @@
 import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { LoggingMiddleware } from './middlewares/logging.middleware';
+import { MongooseModule } from '@nestjs/mongoose';
+import { LoggingModule } from './logging/logging.module';
 
 @Module({
   imports: [
@@ -16,6 +18,13 @@ import { LoggingMiddleware } from './middlewares/logging.middleware';
         UserModule,
         BookmarkModule,
         PrismaModule,
+        MongooseModule.forRootAsync({
+          useFactory: async (configService: ConfigService) => ({
+            uri: configService.get<string>('MONGODB_URI'),
+          }),
+          inject: [ConfigService],
+        }),
+        LoggingModule
       ],
   providers:[Logger]
 })

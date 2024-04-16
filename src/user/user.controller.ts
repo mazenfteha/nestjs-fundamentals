@@ -6,7 +6,7 @@ import { EditUserDto } from './dto';
 import { UserService } from './user.service';
 import { LoggingInterceptor } from 'src/Interceptors/logging.Interceptor';
 
-@UseInterceptors(new LoggingInterceptor())
+@UseInterceptors(LoggingInterceptor)
 @UseGuards(JwtGuard)
 @Controller('api/v1/users')
 export class UserController {

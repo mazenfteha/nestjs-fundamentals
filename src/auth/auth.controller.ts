@@ -23,7 +23,7 @@ export class AuthController {
     signin(@Body() dto: LoginDto) {
         return this.authService.signin(dto);
     }
-    @UseInterceptors(new LoggingInterceptor())
+    @UseInterceptors(LoggingInterceptor)
     @UseGuards(JwtGuard)
     @HttpCode(HttpStatus.OK)
     @Post('logout')
@@ -31,7 +31,7 @@ export class AuthController {
         return this.authService.logout(userId);
     }
 
-    @UseInterceptors(new LoggingInterceptor())
+    @UseInterceptors(LoggingInterceptor)
     @UseGuards(RtGuard)
     @Post('refresh')
     @HttpCode(HttpStatus.OK)
