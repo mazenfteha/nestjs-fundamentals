@@ -4,6 +4,7 @@ import { BookmarkService } from './bookmark.service';
 import { GetUser } from 'src/auth/decorator';
 import { CreateBookMarkDto, EditBookMarkDto } from './dto';
 import { LoggingInterceptor } from 'src/Interceptors/logging.Interceptor';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @UseInterceptors(LoggingInterceptor)
 @UseGuards(JwtGuard)
@@ -19,6 +20,7 @@ export class BookmarkController {
         return this.bookmarkService.createBookmark(userId, dto)
     }
 
+    @UseInterceptors(CacheInterceptor)
     @Get()
     getBookMarks(@GetUser('id') userId: number){
         return this.bookmarkService.getBookMarks(userId)

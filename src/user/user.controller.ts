@@ -5,12 +5,14 @@ import { JwtGuard } from 'src/auth/guard';
 import { EditUserDto } from './dto';
 import { UserService } from './user.service';
 import { LoggingInterceptor } from 'src/Interceptors/logging.Interceptor';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @UseInterceptors(LoggingInterceptor)
 @UseGuards(JwtGuard)
 @Controller('api/v1/users')
 export class UserController {
     constructor(private userService: UserService){}
+    @UseInterceptors(CacheInterceptor)
     @Get('me')
     getMe(@GetUser() user: User) {
         return user;

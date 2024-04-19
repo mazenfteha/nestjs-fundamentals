@@ -8,6 +8,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { LoggingMiddleware } from './middlewares/logging.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggingModule } from './logging/logging.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -24,7 +25,11 @@ import { LoggingModule } from './logging/logging.module';
           }),
           inject: [ConfigService],
         }),
-        LoggingModule
+        LoggingModule,
+        CacheModule.register({
+          isGlobal: true,
+          ttl: 6 * 10000
+        })
       ],
   providers:[Logger]
 })
