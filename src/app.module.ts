@@ -9,6 +9,7 @@ import { LoggingMiddleware } from './middlewares/logging.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggingModule } from './logging/logging.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore }  from 'cache-manager-redis-yet';
 
 @Module({
   imports: [
@@ -28,7 +29,10 @@ import { CacheModule } from '@nestjs/cache-manager';
         LoggingModule,
         CacheModule.register({
           isGlobal: true,
-          ttl: 6 * 10000
+          ttl: 6 * 10000,
+          store: redisStore, 
+          host: 'localhost',
+          port: 6379,
         })
       ],
   providers:[Logger]
